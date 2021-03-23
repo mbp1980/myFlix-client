@@ -1,4 +1,4 @@
-cache
+.cache
 node modules
 *.json
 *.json
