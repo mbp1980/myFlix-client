@@ -3,3 +3,15 @@ node modules
 *.json
 *.json
 *.json
+node_modules/.bin/babylon
+node_modules/.bin/babylon.cmd
+node_modules/.bin/babylon.ps1
+node_modules/.bin/browserslist
+node_modules/.bin/browserslist.cmd
+node_modules/.bin/browserslist.ps1
+node_modules/.bin/jsesc
+node_modules/.bin/jsesc.cmd
+node_modules/.bin/jsesc.ps1
+node_modules/.bin/loose-envify
+node_modules/.bin/loose-envify.cmd
+node_modules/.bin/loose-envify.ps1
