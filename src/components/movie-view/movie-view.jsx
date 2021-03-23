@@ -9,7 +9,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, handleBackButton } = this.props;
+    const { movie, onClick } = this.props;
 
     if (!movie) return null;
 
