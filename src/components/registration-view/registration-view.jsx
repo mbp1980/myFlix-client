@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 
-export function RegisterView(props) {
+export function RegistrationView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +36,6 @@ export function RegisterView(props) {
   )
 }
 
-RegisterView.PropTypes = {
+RegistrationView.propTypes = {
   onRegister: PropTypes.func.isRequired
 };
