@@ -47956,11 +47956,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RegistrationView = RegistrationView;
 
+var _reactBootstrap = require("react-bootstrap");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactBootstrap = require("react-bootstrap");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -48046,7 +48046,7 @@ RegistrationView.propTypes = {
   }),
   onRegister: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js"}],"components/movie-card/movie-card.jsx":[function(require,module,exports) {
+},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js"}],"components/movie-card/movie-card.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -48056,7 +48056,7 @@ exports.MovieCard = void 0;
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
-var _Card = _interopRequireDefault(require("react-bootstrap/Card"));
+var _reactBootstrap = _interopRequireDefault(require("react-bootstrap"));
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -48103,10 +48103,10 @@ var MovieCard = /*#__PURE__*/function (_React$Component) {
       var _this$props = this.props,
           movie = _this$props.movie,
           _onClick = _this$props.onClick;
-      return _react.default.createElement(_Card.default, null, _react.default.createElement(_Card.default.Img, {
+      return _react.default.createElement(_reactBootstrap.default, null, _react.default.createElement(_reactBootstrap.default.Img, {
         variant: "top",
         src: movie.ImagePath
-      }), _react.default.createElement(_Card.default.Body, null, _react.default.createElement(_Card.default.Title, null, movie.Title), _react.default.createElement(_Card.default.Text, null, movie.Description), _react.default.createElement(_Button.default, {
+      }), _react.default.createElement(_reactBootstrap.default.Body, null, _react.default.createElement(_reactBootstrap.default.Title, null, movie.Title), _react.default.createElement(_reactBootstrap.default.Text, null, movie.Description), _react.default.createElement(_Button.default, {
         onClick: function onClick() {
           return _onClick(movie);
         },
@@ -48127,7 +48127,7 @@ MovieCard.propTypes = {
   }).isRequired,
   onClick: _propTypes.default.func.isRequired
 };
-},{"react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Card":"../node_modules/react-bootstrap/esm/Card.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -48207,11 +48207,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MovieView = void 0;
 
+var _reactBootstrap = require("react-bootstrap");
+
 var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
-
-var _reactBootstrap = require("react-bootstrap");
 
 require("./movie-view.scss");
 
@@ -48307,7 +48307,7 @@ MovieView.propTypes = {
   }).isRequired,
   onClick: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
+},{"react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./movie-view.scss":"components/movie-view/movie-view.scss"}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
