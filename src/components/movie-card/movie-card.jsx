@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie, director, genre } = this.props;
+    const { movie } = this.props;
 
 
     return (

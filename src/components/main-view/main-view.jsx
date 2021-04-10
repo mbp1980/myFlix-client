@@ -67,7 +67,7 @@ componentDidMount() {
     });
 
     localStorage.setItem("token", authData.token);
-    localStorage.setItem("user", authData.Username);
+    localStorage.setItem("user", authData.user.Username);
     this.getMovies(authData.token);
   }
 
@@ -96,19 +96,21 @@ componentDidMount() {
 
 
   render() {
+
+    console.log("Render", this.state, this.props);
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
     const { movies, onBackClick, user, register, director, genre } = this.state;
 
     // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-    // if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
+    if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
 
     // if (!register) return <RegistrationView onRegister={(register) => this.onRegister(register)}/>;
 
     // Before the movies have been loaded
     // if (movies.length === 0) return <div className="main-view">The list is empty!</div>;
 
-    if (!movies) return <div className="main-view"/>; 
+    if (movies.length === 0) return <div className="main-view"/>; 
 
     return (
       <Router>
@@ -120,7 +122,7 @@ componentDidMount() {
             <Button  className="button" variant="link">Home</Button>
           </Link>
           <Link to= {`/`}>
-            <Button  className="button" variant="link">Logout</Button>
+            <Button variant="link" onClick={user => this.onLoggedOut()}>Logout</Button>
           </Link>
           <Route exact path="/" render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
@@ -136,13 +138,11 @@ componentDidMount() {
             ({match}) => <MovieView movie={movies.find(
               m => m._id === match.params.movieId)}/>
           }/>
-          <Route path="/genre/:name" render={({ match }) => {
-            if (!movies) return <div className="main-view"/>;
+          <Route path="/genres/:name" render={({ match }) => {
             return <GenreView genre={movies.find(
               m => m.Genre.Name === match.params.name).Genre}/>}
           }/>
-          <Route path="/director/:name" render={({ match }) => {
-            if (!movies) return <div className="main-view"/>;
+          <Route path="/directors/:name" render={({ match }) => {
             return <DirectorView director={movies.find(
               m => m.Director.Name === match.params.name).Director}/>}
           }/>
