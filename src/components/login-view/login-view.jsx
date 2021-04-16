@@ -28,7 +28,7 @@ export function LoginView(props) {
     })
     .catch(e => {
       console.log("user does not exist");
-      console.log(e.response.data);
+      console.log(e);
     });
   };
 

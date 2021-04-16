@@ -24,33 +24,47 @@ export class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovies: null,
-      user: null
+      user: null,
+      token: null
     };
   }
 
     
 getMovies(token) {
-  axios.get("https://bestflixdb.herokuapp.com/movies", {
+  return axios.get("https://bestflixdb.herokuapp.com/movies", {
     headers: { Authorization: `Bearer ${token}`}
-  })
-  .then(response => {
-    // Assign the result to the state
-    this.setState({
-      movies: response.data
     });
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
 }
 
 componentDidMount() {
-  let accessToken = localStorage.getItem("token");
-  if (accessToken !== null) {
-    this.setState({
-      user: localStorage.getItem("user")
+  let token = localStorage.getItem("token");
+  if (token !== null) {
+    this.setState( {
+      user: { Username: localStorage.getItem("user") },
+      token: token
     });
-    this.getMovies(accessToken);
+    axios.get(
+      `https://bestflixdb.herokuapp.com/users/${localStorage.getItem("user")}`,
+      {
+        headers: { Authorization: `Bearer ${token}`}
+      })
+      .then(response => {
+        const user =response.data;
+      
+        return this.getMovies(token)
+          .then(response => {
+            const movies = response.data;
+
+            this.setState( {
+              user: user,
+              movies: movies
+            })
+      });
+  })
+  .catch (e => {
+    alert(`Something went bad...`);
+  })
+    
   }
 }
 
@@ -62,13 +76,22 @@ componentDidMount() {
 
   onLoggedIn(authData) {
     console.log(authData);
-    this.setState({
-      user: authData.user.Username
-    });
+    
 
     localStorage.setItem("token", authData.token);
     localStorage.setItem("user", authData.user.Username);
-    this.getMovies(authData.token);
+    this.getMovies(authData.token)
+      .then(response => {
+        const movies = response.data;
+        this.setState({
+          user: authData.user,
+          movies: movies
+        });
+      })
+      .catch (e => { 
+        console.error(e)
+        alert(`Something went bad...`); 
+      });
   }
 
   onLoggedOut() {
@@ -96,11 +119,11 @@ componentDidMount() {
 
 
   render() {
-
     console.log("Render", this.state, this.props);
+    
     // If the state isn't initialized, this will throw on runtime
     // before the data is initially loaded
-    const { movies, onBackClick, user, register, director, genre } = this.state;
+    const { movies,  user, token } = this.state;
 
     // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
     if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
@@ -125,25 +148,51 @@ componentDidMount() {
             <Button variant="link" onClick={user => this.onLoggedOut()}>Logout</Button>
           </Link>
           <Route exact path="/" render={() => {
-            if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
             return movies.map(m => <MovieCard key={m._id} movie={m}/>)
             }
           }/>
           <Route path="/register" render={() => <RegistrationView/>
           }/>
-          <Route path="/profile" render={() => <ProfileView/>   
+          <Route path="/profile" render={() => <ProfileView user={user}/>   
           }/>
           {/* <Route exact path="/" render={() => movies.map(m => <MovieCard key={m._id} movie={m}/>)}/> */}
           <Route path="/movies/:movieId" render={
-            ({match}) => <MovieView movie={movies.find(
-              m => m._id === match.params.movieId)}/>
-          }/>
-          <Route path="/genres/:name" render={({ match }) => {
-            return <GenreView genre={movies.find(
+            ({ match }) => {
+              console.log("Render movie")
+              const movieID = match.params.movieId;
+              const username = user.Username;
+              const favoriteMovieURL = `http://bestFlixdb.herokuapp.com/users/${username}/Movies/${movieID} `; 
+              return <MovieView 
+              movie={movies.find( m => m._id === match.params.movieId)}
+              onAddToFavorite= {
+               () => {
+                 return axios.post(
+                   favoriteMovieURL, 
+                   {},  
+                  { headers: {"Authorization": `Bearer ${token}`} }
+                  )
+                  .then((response) => {
+                    const user = response.data;
+                    this.setState({ user: user});
+                    alert("Movie added to favorites.");                
+                  })
+                  .catch(e => {
+                    console.error(e);
+                    alert("something went wrong...");
+                  })
+               }
+              } 
+            />
+          }
+        }/>
+          <Route path="/genres/:name" render={({ history, match }) => {
+            console.log(history.location);
+            return <GenreView onGoBack={() => history.goBack()} genre={movies.find(
               m => m.Genre.Name === match.params.name).Genre}/>}
           }/>
-          <Route path="/directors/:name" render={({ match }) => {
-            return <DirectorView director={movies.find(
+          <Route path="/directors/:name" render={({ history, match }) => {
+            console.log(history.location);
+            return <DirectorView onGoBack={() => history.goBack()} director={movies.find(
               m => m.Director.Name === match.params.name).Director}/>}
           }/>
         </div>

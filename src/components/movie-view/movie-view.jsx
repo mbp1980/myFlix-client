@@ -19,7 +19,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, handleBackButton } = this.props; //returnHome
+    const { movie, onAddToFavorite } = this.props; //returnHome
 
     // next return wont run if this is true
     if (!movie) return null;
@@ -42,9 +42,12 @@ export class MovieView extends React.Component {
                   <Button className="button" variant="link">{movie.Genre.Name}</Button>
                 </Link>
               </Card.Text>
-              <Button className="return-button"
+              <Button 
+                  onClick={() => onAddToFavorite()} 
+                  className="return-button"
                   variant="primary"
-                  size="sm"> Add to Favorites
+                  size="sm"
+                > Add to Favorites
               </Button>
               <br></br>
               <Link to={`/`}>

@@ -17,7 +17,7 @@ export class DirectorView extends React.Component {
   }
 
   render() {
-    const { director } = this.props;
+    const { director, onGoBack } = this.props;
 
     if (!director) return null;
     // if (!movies) return null;
@@ -28,13 +28,11 @@ export class DirectorView extends React.Component {
         <Card>
           <Card.Title>{director.Name}</Card.Title>
           <Card.Body>
-            <Card.Text><h6>Bio:</h6> {director.Bio}</Card.Text>
-            <Card.Text><h6>Born:</h6> {director.Birth}</Card.Text>                  
-          </Card.Body>
-          <Link to={`/`}>
-            <Button className="back-button" variant="link">Return to Movies</Button>
-          </Link>
-        </Card>
+            <Card.Text><strong>Bio:</strong> {director.Bio}</Card.Text>
+            <Card.Text><strong>Born:</strong> {director.Birth}</Card.Text>                  
+          </Card.Body>          
+            <Button onClick= {() => onGoBack()} className="back-button" variant="link">Return to Movie</Button>
+          </Card>
       </div>
     );
   }
