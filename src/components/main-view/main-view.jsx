@@ -36,6 +36,39 @@ getMovies(token) {
     });
 }
 
+addToFavoriteMovies(movieID, username, token) {
+  return axios.post(
+   `http://bestFlixdb.herokuapp.com/users/${username}/Movies/${movieID} `, 
+    {},  
+   { headers: {"Authorization": `Bearer ${token}`} }
+   )
+   .then((response) => {
+     const user = response.data;
+     this.setState({ user: user});
+     alert("Movie added to favorites.");                
+   })
+   .catch(e => {
+     console.error(e);
+     alert("something went wrong...");
+   })
+}
+
+removeFromFavoriteMovies(movieID, username, token) {
+  return axios.delete(
+   `http://bestFlixdb.herokuapp.com/users/${username}/Movies/${movieID} `,     
+      { headers: {"Authorization": `Bearer ${token}`} }
+      )
+      .then((response) => {
+        const user = response.data;
+        this.setState({ user: user});
+        alert("Movie removed from favorites.");                
+      })
+      .catch(e => {
+        console.error(e);
+        alert("something went wrong...");
+      })
+}
+
 componentDidMount() {
   let token = localStorage.getItem("token");
   if (token !== null) {
@@ -102,7 +135,6 @@ componentDidMount() {
     });
     console.log("logout successful");
     alert("You have been successfully logged out");
-    window.open("/", "_self");
   }
 
   onRegister(register) {
@@ -111,12 +143,7 @@ componentDidMount() {
     });
   }
 
-  onBackClick() {
-    this.setState({
-      selectedMovie: null
-    });
-  }
-
+  
 
   render() {
     console.log("Render", this.state, this.props);
@@ -128,11 +155,7 @@ componentDidMount() {
     // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
     if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
 
-    // if (!register) return <RegistrationView onRegister={(register) => this.onRegister(register)}/>;
-
-    // Before the movies have been loaded
-    // if (movies.length === 0) return <div className="main-view">The list is empty!</div>;
-
+    
     if (movies.length === 0) return <div className="main-view"/>; 
 
     return (
@@ -153,34 +176,21 @@ componentDidMount() {
           }/>
           <Route path="/register" render={() => <RegistrationView/>
           }/>
-          <Route path="/profile" render={() => <ProfileView user={user}/>   
+          <Route path="/profile" render={() => 
+          <ProfileView 
+          user={user} 
+          favoriteMovies={user.FavoriteMovies.map(movieID => movies.find(movie => movie._id === movieID))}
+          onRemoveFromFavorite={(movieID) => this.removeFromFavoriteMovies(movieID, user.Username, token)}
+          />   
           }/>
           {/* <Route exact path="/" render={() => movies.map(m => <MovieCard key={m._id} movie={m}/>)}/> */}
           <Route path="/movies/:movieId" render={
             ({ match }) => {
-              console.log("Render movie")
-              const movieID = match.params.movieId;
-              const username = user.Username;
-              const favoriteMovieURL = `http://bestFlixdb.herokuapp.com/users/${username}/Movies/${movieID} `; 
+              console.log("Render movie")              
               return <MovieView 
               movie={movies.find( m => m._id === match.params.movieId)}
-              onAddToFavorite= {
-               () => {
-                 return axios.post(
-                   favoriteMovieURL, 
-                   {},  
-                  { headers: {"Authorization": `Bearer ${token}`} }
-                  )
-                  .then((response) => {
-                    const user = response.data;
-                    this.setState({ user: user});
-                    alert("Movie added to favorites.");                
-                  })
-                  .catch(e => {
-                    console.error(e);
-                    alert("something went wrong...");
-                  })
-               }
+              onAddToFavorite= {() => this.addToFavoriteMovies(match.params.movieId, user.Username, token)
+               
               } 
             />
           }
