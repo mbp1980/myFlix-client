@@ -10,18 +10,11 @@ import { MovieCard } from '../movie-card/movie-card';
 export class ProfileView extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {
-        username: "",
-        password: "",
-        email: "",
-        birthdate: "",
-        favoriteMovies: [],
-        movies: "",
-      };
+      
     }
     render() {
       console.log("Render", this.props);
-      const { user, movie } = this.props;
+      const { user, favoriteMovies, onRemoveFromFavorite } = this.props;
   
       if (!user) return null;
         
@@ -36,9 +29,20 @@ export class ProfileView extends React.Component {
             {/* <Card.Text><strong>Password: </strong>{user.Password}</Card.Text> */}
             <Card.Text><strong>Birthdate: </strong>{user.Birthdate}</Card.Text>
             <Card.Text><strong>Favorite Movies: </strong>
+            </Card.Text>
+              <ul>
+                {
+                  favoriteMovies.map(
+                    movie => 
+                    <li key={movie._id}>{movie.Title}
+                    <button onClick={() => onRemoveFromFavorite(movie._id)}>Remove</button> 
+                    </li>
+                    )
+                }
+              </ul>
               
             
-            </Card.Text>
+            
 
            </Card.Body>
           </Card>
