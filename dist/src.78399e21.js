@@ -51488,20 +51488,9 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(ProfileView);
 
   function ProfileView(props) {
-    var _this;
-
     _classCallCheck(this, ProfileView);
 
-    _this = _super.call(this, props);
-    _this.state = {
-      username: "",
-      password: "",
-      email: "",
-      birthdate: "",
-      favoriteMovies: [],
-      movies: ""
-    };
-    return _this;
+    return _super.call(this, props);
   }
 
   _createClass(ProfileView, [{
@@ -51510,11 +51499,20 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
       console.log("Render", this.props);
       var _this$props = this.props,
           user = _this$props.user,
-          movie = _this$props.movie;
+          favoriteMovies = _this$props.favoriteMovies,
+          onRemoveFromFavorite = _this$props.onRemoveFromFavorite;
       if (!user) return null;
       return _react.default.createElement("div", {
         className: "profile-view"
-      }, _react.default.createElement(_reactBootstrap.Card, null, _react.default.createElement(_reactBootstrap.Card.Title, null, "Profile for ", user.Username), _react.default.createElement(_reactBootstrap.Card.Body, null, _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Username: "), user.Username), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Email: "), user.Email), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Birthdate: "), user.Birthdate), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Favorite Movies: ")))));
+      }, _react.default.createElement(_reactBootstrap.Card, null, _react.default.createElement(_reactBootstrap.Card.Title, null, "Profile for ", user.Username), _react.default.createElement(_reactBootstrap.Card.Body, null, _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Username: "), user.Username), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Email: "), user.Email), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Birthdate: "), user.Birthdate), _react.default.createElement(_reactBootstrap.Card.Text, null, _react.default.createElement("strong", null, "Favorite Movies: ")), _react.default.createElement("ul", null, favoriteMovies.map(function (movie) {
+        return _react.default.createElement("li", {
+          key: movie._id
+        }, movie.Title, _react.default.createElement("button", {
+          onClick: function onClick() {
+            return onRemoveFromFavorite(movie._id);
+          }
+        }, "Remove"));
+      })))));
     }
   }]);
 
@@ -51821,9 +51819,53 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
+    key: "addToFavoriteMovies",
+    value: function addToFavoriteMovies(movieID, username, token) {
+      var _this2 = this;
+
+      return _axios.default.post("http://bestFlixdb.herokuapp.com/users/".concat(username, "/Movies/").concat(movieID, " "), {}, {
+        headers: {
+          "Authorization": "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        var user = response.data;
+
+        _this2.setState({
+          user: user
+        });
+
+        alert("Movie added to favorites.");
+      }).catch(function (e) {
+        console.error(e);
+        alert("something went wrong...");
+      });
+    }
+  }, {
+    key: "removeFromFavoriteMovies",
+    value: function removeFromFavoriteMovies(movieID, username, token) {
+      var _this3 = this;
+
+      return _axios.default.delete("http://bestFlixdb.herokuapp.com/users/".concat(username, "/Movies/").concat(movieID, " "), {
+        headers: {
+          "Authorization": "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        var user = response.data;
+
+        _this3.setState({
+          user: user
+        });
+
+        alert("Movie removed from favorites.");
+      }).catch(function (e) {
+        console.error(e);
+        alert("something went wrong...");
+      });
+    }
+  }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
+      var _this4 = this;
 
       var token = localStorage.getItem("token");
 
@@ -51841,10 +51883,10 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           }
         }).then(function (response) {
           var user = response.data;
-          return _this2.getMovies(token).then(function (response) {
+          return _this4.getMovies(token).then(function (response) {
             var movies = response.data;
 
-            _this2.setState({
+            _this4.setState({
               user: user,
               movies: movies
             });
@@ -51864,7 +51906,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "onLoggedIn",
     value: function onLoggedIn(authData) {
-      var _this3 = this;
+      var _this5 = this;
 
       console.log(authData);
       localStorage.setItem("token", authData.token);
@@ -51872,7 +51914,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       this.getMovies(authData.token).then(function (response) {
         var movies = response.data;
 
-        _this3.setState({
+        _this5.setState({
           user: authData.user,
           movies: movies
         });
@@ -51891,7 +51933,6 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       });
       console.log("logout successful");
       alert("You have been successfully logged out");
-      window.open("/", "_self");
     }
   }, {
     key: "onRegister",
@@ -51901,16 +51942,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       });
     }
   }, {
-    key: "onBackClick",
-    value: function onBackClick() {
-      this.setState({
-        selectedMovie: null
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this6 = this;
 
       console.log("Render", this.state, this.props); // If the state isn't initialized, this will throw on runtime
       // before the data is initially loaded
@@ -51922,12 +51956,9 @@ var MainView = /*#__PURE__*/function (_React$Component) {
 
       if (!user) return _react.default.createElement(_loginView.LoginView, {
         onLoggedIn: function onLoggedIn(user) {
-          return _this4.onLoggedIn(user);
+          return _this6.onLoggedIn(user);
         }
-      }); // if (!register) return <RegistrationView onRegister={(register) => this.onRegister(register)}/>;
-      // Before the movies have been loaded
-      // if (movies.length === 0) return <div className="main-view">The list is empty!</div>;
-
+      });
       if (movies.length === 0) return _react.default.createElement("div", {
         className: "main-view"
       });
@@ -51948,7 +51979,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       }, _react.default.createElement(_Button.default, {
         variant: "link",
         onClick: function onClick(user) {
-          return _this4.onLoggedOut();
+          return _this6.onLoggedOut();
         }
       }, "Logout")), _react.default.createElement(_reactRouterDom.Route, {
         exact: true,
@@ -51970,7 +52001,15 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         path: "/profile",
         render: function render() {
           return _react.default.createElement(_profileView.ProfileView, {
-            user: user
+            user: user,
+            favoriteMovies: user.FavoriteMovies.map(function (movieID) {
+              return movies.find(function (movie) {
+                return movie._id === movieID;
+              });
+            }),
+            onRemoveFromFavorite: function onRemoveFromFavorite(movieID) {
+              return _this6.removeFromFavoriteMovies(movieID, user.Username, token);
+            }
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
@@ -51978,30 +52017,12 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         render: function render(_ref) {
           var match = _ref.match;
           console.log("Render movie");
-          var movieID = match.params.movieId;
-          var username = user.Username;
-          var favoriteMovieURL = "http://bestFlixdb.herokuapp.com/users/".concat(username, "/Movies/").concat(movieID, " ");
           return _react.default.createElement(_movieView.MovieView, {
             movie: movies.find(function (m) {
               return m._id === match.params.movieId;
             }),
             onAddToFavorite: function onAddToFavorite() {
-              return _axios.default.post(favoriteMovieURL, {}, {
-                headers: {
-                  "Authorization": "Bearer ".concat(token)
-                }
-              }).then(function (response) {
-                var user = response.data;
-
-                _this4.setState({
-                  user: user
-                });
-
-                alert("Movie added to favorites.");
-              }).catch(function (e) {
-                console.error(e);
-                alert("something went wrong...");
-              });
+              return _this6.addToFavoriteMovies(match.params.movieId, user.Username, token);
             }
           });
         }
@@ -52163,7 +52184,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55849" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51458" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
