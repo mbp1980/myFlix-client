@@ -35,10 +35,12 @@ export class ProfileView extends React.Component {
                   favoriteMovies.map(
                     movie => 
                     <li key={movie._id}>{movie.Title}
-                    <button onClick={() => onRemoveFromFavorite(movie._id)}>Remove</button> 
+                    <button onClick={() => 
+                      onRemoveFromFavorite(movie._id)}>Remove</button> 
                     </li>
                     )
                 }
+                
               </ul>
               
             

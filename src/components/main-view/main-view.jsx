@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import Button from "react-bootstrap/Button";
+import Col from 'react-bootstrap/Col';
 
 
 
@@ -153,10 +154,15 @@ componentDidMount() {
     const { movies,  user, token } = this.state;
 
     // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-    if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
+    // if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
+
+    // if (!register)
+    //   return (
+    //     <RegisterView onRegister={(register) => this.onRegister(register)} />
+    //   );
 
     
-    if (movies.length === 0) return <div className="main-view"/>; 
+    // if (movies.length === 0) return <div className="main-view"/>; 
 
     return (
       <Router>
@@ -171,25 +177,42 @@ componentDidMount() {
             <Button variant="link" onClick={user => this.onLoggedOut()}>Logout</Button>
           </Link>
           <Route exact path="/" render={() => {
-            return movies.map(m => <MovieCard key={m._id} movie={m}/>)
-            }
-          }/>
-          <Route path="/register" render={() => <RegistrationView/>
-          }/>
+            if (!user) return <Col>
+              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+            </Col>
+            if (movies.length === 0) return <div className="main-view" />;
+            return movies.map(m => (
+              <Col md={3} key={m._id}>
+                <MovieCard movie={m} />
+              </Col>
+            ))
+          }} />
+          <Route path="/register" render={() => {
+            if (user) return <Redirect to="/" />
+            return <Col>
+              <RegistrationView />
+            </Col>
+          }} />
           <Route path="/profile" render={() => 
           <ProfileView 
           user={user} 
-          favoriteMovies={user.FavoriteMovies.map(movieID => movies.find(movie => movie._id === movieID))}
-          onRemoveFromFavorite={(movieID) => this.removeFromFavoriteMovies(movieID, user.Username, token)}
+          favoriteMovies={
+            user.FavoriteMovies.map(
+              movieID => movies.find(
+                movie => movie._id === movieID))}
+          onRemoveFromFavorite={(movieID) => 
+            this.removeFromFavoriteMovies(movieID, user.Username, token)}
           />   
-          }/>
-          {/* <Route exact path="/" render={() => movies.map(m => <MovieCard key={m._id} movie={m}/>)}/> */}
+          }/>          
           <Route path="/movies/:movieId" render={
             ({ match }) => {
               console.log("Render movie")              
               return <MovieView 
-              movie={movies.find( m => m._id === match.params.movieId)}
-              onAddToFavorite= {() => this.addToFavoriteMovies(match.params.movieId, user.Username, token)
+              movie={movies.find( m => 
+                m._id === match.params.movieId)}
+              onAddToFavorite= {() => 
+                this.addToFavoriteMovies(
+                  match.params.movieId, user.Username, token)
                
               } 
             />

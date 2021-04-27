@@ -3,6 +3,8 @@ import { Form, Button } from "react-bootstrap";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 export function LoginView(props) {
   const [ username, setUsername ] = useState("");
@@ -30,7 +32,10 @@ export function LoginView(props) {
       console.log("user does not exist");
       console.log(e);
     });
+    
   };
+
+  
 
   return (
     <Form>
@@ -45,6 +50,22 @@ export function LoginView(props) {
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
         </Button>
+        <br/>
+        <br/>
+        <p>Don't have an account?  Register below</p>   
+      <Router>
+        
+        {/* <Route path="/register" render={() => 
+        <RegistrationView/>
+          }/> */}
+        <Button variant="primary" type="submit">
+        Register
+        </Button>
+        
+
+        </Router>
+
+  
     </Form>
   );
 }
