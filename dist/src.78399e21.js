@@ -50968,13 +50968,7 @@ function LoginView(props) {
   var _useState3 = (0, _react.useState)(""),
       _useState4 = _slicedToArray(_useState3, 2),
       password = _useState4[0],
-      setPassword = _useState4[1]; // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(username, password);
-  //   // Send a request to the server for authentication then call props.onLoggedIn(username)
-  //   props.onLoggedIn(username);
-  // };
-
+      setPassword = _useState4[1];
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault(); //Send a request to the server for authentication
@@ -51013,7 +51007,9 @@ function LoginView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleSubmit
-  }, "Submit"), _react.default.createElement("br", null), _react.default.createElement("br", null), _react.default.createElement("p", null, "Don't have an account?  Register below"), _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement(_reactBootstrap.Button, {
+  }, "Submit"), _react.default.createElement("br", null), _react.default.createElement("br", null), _react.default.createElement("p", null, "Don't have an account?  Register below"), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/register"
+  }, _react.default.createElement(_reactBootstrap.Button, {
     variant: "primary",
     type: "submit"
   }, "Register")));
@@ -51166,7 +51162,7 @@ function RegistrationView(props) {
       Birthdate: birthdate
     }).then(function (response) {
       var data = response.data;
-      console.log(username, password, email, birthdate);
+      console.log(username, password, email, birthdate, data);
       props.onRegister(username);
       window.open("/", "_self"); // the second argument "_self" is necessary so that the page will open in the current tab
     }).catch(function (e) {
@@ -51971,14 +51967,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
       var _this$state = this.state,
           movies = _this$state.movies,
           user = _this$state.user,
-          token = _this$state.token; // If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-      // if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>; 
-      // if (!register)
-      //   return (
-      //     <RegisterView onRegister={(register) => this.onRegister(register)} />
-      //   );
-      // if (movies.length === 0) return <div className="main-view"/>; 
-
+          token = _this$state.token;
       return _react.default.createElement(_reactRouterDom.BrowserRouter, null, _react.default.createElement("div", {
         className: "main-view"
       }, _react.default.createElement(_reactRouterDom.Link, {
@@ -52012,7 +52001,6 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           });
           return movies.map(function (m) {
             return _react.default.createElement(_Col.default, {
-              md: 3,
               key: m._id
             }, _react.default.createElement(_movieCard.MovieCard, {
               movie: m
@@ -52047,6 +52035,14 @@ var MainView = /*#__PURE__*/function (_React$Component) {
         render: function render(_ref) {
           var match = _ref.match;
           console.log("Render movie");
+          if (!user) return _react.default.createElement(_Col.default, null, _react.default.createElement(_loginView.LoginView, {
+            onLoggedIn: function onLoggedIn(user) {
+              return _this6.onLoggedIn(user);
+            }
+          }));
+          if (movies.length === 0) return _react.default.createElement("div", {
+            className: "main-view"
+          });
           return _react.default.createElement(_movieView.MovieView, {
             movie: movies.find(function (m) {
               return m._id === match.params.movieId;
@@ -52062,6 +52058,14 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           var history = _ref2.history,
               match = _ref2.match;
           console.log(history.location);
+          if (!user) return _react.default.createElement(_Col.default, null, _react.default.createElement(_loginView.LoginView, {
+            onLoggedIn: function onLoggedIn(user) {
+              return _this6.onLoggedIn(user);
+            }
+          }));
+          if (movies.length === 0) return _react.default.createElement("div", {
+            className: "main-view"
+          });
           return _react.default.createElement(_genreView.GenreView, {
             onGoBack: function onGoBack() {
               return history.goBack();
@@ -52077,6 +52081,14 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           var history = _ref3.history,
               match = _ref3.match;
           console.log(history.location);
+          if (!user) return _react.default.createElement(_Col.default, null, _react.default.createElement(_loginView.LoginView, {
+            onLoggedIn: function onLoggedIn(user) {
+              return _this6.onLoggedIn(user);
+            }
+          }));
+          if (movies.length === 0) return _react.default.createElement("div", {
+            className: "main-view"
+          });
           return _react.default.createElement(_directorView.DirectorView, {
             onGoBack: function onGoBack() {
               return history.goBack();
@@ -52091,31 +52103,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return MainView;
-}(_react.default.Component); //     return (
-//       <div className="main-view">
-//         {selectedMovie
-//           ? ( 
-//             <Row className="justify-content-md-center">
-//               <Col md={8}>
-//                 <MovieView movie={selectedMovie} onClick={() => this.onBackClick()}/> 
-//               </Col>
-//             </Row> 
-//             )
-//             : (
-//               <Row className="justify-content-md-center">
-//                 {movies.map(movie => (
-//                   <Col md={3}>
-//                   <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)}/>
-//                   </Col>
-//                 ))}
-//               </Row>
-//             )
-//           }
-//         </div>
-//       );
-//    }
-//  }
-
+}(_react.default.Component);
 
 exports.MainView = MainView;
 },{"axios":"../node_modules/axios/index.js","react":"../node_modules/react/index.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../login-view/login-view":"components/login-view/login-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movie-card/movie-card":"components/movie-card/movie-card.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../profile-view/profile-view":"components/profile-view/profile-view.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","./main-view.scss":"components/main-view/main-view.scss"}],"index.scss":[function(require,module,exports) {
@@ -52214,7 +52202,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63146" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57692" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
