@@ -16,7 +16,6 @@ export function RegistrationView(props) {
   const handleSubmit = (e) => {
     e.preventDefault(); 
       
-
   axios.post("https://bestflixdb.herokuapp.com/users", {
     Username: username,
     Password: password,
@@ -25,7 +24,7 @@ export function RegistrationView(props) {
   })
   .then(response => {
     const data = response.data;
-    console.log(username, password, email, birthdate);
+    console.log(username, password, email, birthdate, data);
     props.onRegister(username);
     window.open("/", "_self"); // the second argument "_self" is necessary so that the page will open in the current tab
   })
