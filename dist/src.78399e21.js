@@ -51506,7 +51506,7 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
 
   _createClass(ProfileView, [{
     key: "handleDelete",
-    value: function handleDelete() {
+    value: function handleDelete(user, token) {
       localStorage.getItem("token");
       localStorage.getItem("user");
 

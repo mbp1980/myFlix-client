@@ -12,7 +12,7 @@ export class ProfileView extends React.Component {
       
     }
 
-    handleDelete() {
+    handleDelete(user, token) {
       localStorage.getItem("token");
       localStorage.getItem("user");
       axios
