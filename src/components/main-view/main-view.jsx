@@ -12,6 +12,7 @@ import { RegistrationView } from "../registration-view/registration-view";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { ProfileView } from "../profile-view/profile-view";
+import { ProfileUpdate } from "../profile-update/profile-update";
 import { GenreView } from "../genre-view/genre-view";
 import { DirectorView } from "../director-view/director-view";
 
@@ -146,6 +147,8 @@ componentDidMount() {
 
   
 
+  
+
   render() {
     console.log("Render", this.state, this.props);
     
@@ -197,15 +200,21 @@ componentDidMount() {
         }} />
         <Route path="/profile" render={() => 
         <ProfileView 
-        user={user} 
-        favoriteMovies={
-          user.FavoriteMovies.map(
-            movieID => movies.find(
-              movie => movie._id === movieID))}
-        onRemoveFromFavorite={(movieID) => 
-          this.removeFromFavoriteMovies(movieID, user.Username, token)}
-        />   
-        }/>          
+          user={user} 
+          favoriteMovies={
+            user.FavoriteMovies.map(
+              movieID => movies.find(
+                movie => movie._id === movieID))}
+                onRemoveFromFavorite={(movieID) => 
+                  this.removeFromFavoriteMovies(movieID, user.Username, token)}
+          />   
+        }/>
+        <Route
+              path="/update/:userId"
+              render={() => {
+                return <ProfileUpdate />;
+              }}
+            />          
         <Route path="/movies/:movieId" render={
           ({ match }) => {
             console.log("Render movie")
