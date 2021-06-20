@@ -39,6 +39,7 @@ getMovies(token) {
 }
 
 addToFavoriteMovies(movieID, username, token) {
+  console.log("ADD", movieID, username, token);
   return axios.post(
    `http://bestFlixdb.herokuapp.com/users/${username}/Movies/${movieID} `, 
     {},  

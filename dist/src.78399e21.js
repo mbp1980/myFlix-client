@@ -51507,9 +51507,6 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
   _createClass(ProfileView, [{
     key: "handleDelete",
     value: function handleDelete(user, token) {
-      localStorage.getItem("token");
-      localStorage.getItem("user");
-
       _axios.default.delete("https://bestflixdb.herokuapp.com/users/".concat(user), {
         headers: {
           Authorization: "Bearer ".concat(token)
@@ -51551,7 +51548,7 @@ var ProfileView = /*#__PURE__*/function (_React$Component) {
         }, "Remove"));
       })), _react.default.createElement(_reactBootstrap.Button, {
         onClick: function onClick() {
-          return _this.handleDelete();
+          return _this.handleDelete(user.Username, localStorage.getItem("token"));
         }
       }, "Delete Account"))));
     }
@@ -51997,6 +51994,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
     value: function addToFavoriteMovies(movieID, username, token) {
       var _this2 = this;
 
+      console.log("ADD", movieID, username, token);
       return _axios.default.post("http://bestFlixdb.herokuapp.com/users/".concat(username, "/Movies/").concat(movieID, " "), {}, {
         headers: {
           "Authorization": "Bearer ".concat(token)

@@ -13,8 +13,7 @@ export class ProfileView extends React.Component {
     }
 
     handleDelete(user, token) {
-      localStorage.getItem("token");
-      localStorage.getItem("user");
+      
       axios
         .delete(
           `https://bestflixdb.herokuapp.com/users/${user}`,
@@ -70,7 +69,7 @@ export class ProfileView extends React.Component {
               </ul>
               
               <Button 
-                  onClick={() => this.handleDelete()}
+                  onClick={() => this.handleDelete(user.Username, localStorage.getItem ("token"))}
                 >
                   Delete Account
                 </Button>
