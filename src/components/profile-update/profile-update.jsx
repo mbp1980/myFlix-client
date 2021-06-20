@@ -3,6 +3,8 @@ import { Form, Button } from "react-bootstrap";
 import React, {useState} from "react";
 import PropTypes from "prop-types";
 
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 
 
 
@@ -13,10 +15,10 @@ export function ProfileUpdate() {
   // const [confirmPassword, setConfirmPassword] = useState("");
   const [birthdate, setBirthdate] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleUpdate = (user) => {
     e.preventDefault(); 
       
-  axios.post("https://bestflixdb.herokuapp.com/users", {
+  axios.put(`https://bestflixdb.herokuapp.com/users/${user}`, {
     Username: username,
     Password: password,
     Email: email,
@@ -73,8 +75,10 @@ export function ProfileUpdate() {
             // required
             value={birthdate} 
             onChange={(e) => setBirthdate(e.target.value)}/>
-        </Form.Group>      
-      <Button type="button" onClick={handleSubmit}>Submit</Button>
+        </Form.Group> 
+        <Link to={`/profile`}>     
+      <Button type="button" onClick={handleUpdate}>Submit</Button>
+      </Link>
     </Form>
   )
 }

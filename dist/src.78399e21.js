@@ -51579,6 +51579,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+var _reactRouterDom = require("react-router-dom");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -51619,10 +51621,10 @@ function ProfileUpdate() {
       birthdate = _useState8[0],
       setBirthdate = _useState8[1];
 
-  var handleSubmit = function handleSubmit(e) {
+  var handleUpdate = function handleUpdate(user) {
     e.preventDefault();
 
-    _axios.default.post("https://bestflixdb.herokuapp.com/users", {
+    _axios.default.put("https://bestflixdb.herokuapp.com/users/".concat(user), {
       Username: username,
       Password: password,
       Email: email,
@@ -51677,10 +51679,12 @@ function ProfileUpdate() {
     onChange: function onChange(e) {
       return setBirthdate(e.target.value);
     }
-  })), _react.default.createElement(_reactBootstrap.Button, {
+  })), _react.default.createElement(_reactRouterDom.Link, {
+    to: "/profile"
+  }, _react.default.createElement(_reactBootstrap.Button, {
     type: "button",
-    onClick: handleSubmit
-  }, "Submit"));
+    onClick: handleUpdate
+  }, "Submit")));
 }
 
 ProfileUpdate.propTypes = {
@@ -51692,7 +51696,7 @@ ProfileUpdate.propTypes = {
   }) // onRegister: PropTypes.func.isRequired
 
 };
-},{"axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js"}],"components/genre-view/genre-view.scss":[function(require,module,exports) {
+},{"axios":"../node_modules/axios/index.js","react-bootstrap":"../node_modules/react-bootstrap/esm/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/genre-view/genre-view.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
