@@ -211,7 +211,7 @@ componentDidMount() {
           />   
         }/>
         <Route
-              path="/update/:userId"
+              path="/update"
               render={() => {
                 return <ProfileUpdate />;
               }}

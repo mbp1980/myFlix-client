@@ -52188,7 +52188,7 @@ var MainView = /*#__PURE__*/function (_React$Component) {
           });
         }
       }), _react.default.createElement(_reactRouterDom.Route, {
-        path: "/update/:userId",
+        path: "/update",
         render: function render() {
           return _react.default.createElement(_profileUpdate.ProfileUpdate, null);
         }
@@ -52364,7 +52364,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54841" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63018" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
